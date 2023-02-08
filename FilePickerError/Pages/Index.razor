@@ -1,0 +1,52 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var customFileType = new FilePickerFileType(
+            new Dictionary<DevicePlatform, IEnumerable<string>>
+                    {
+                    //{ DevicePlatform.iOS, new[] { "public.my.comic.extension" } }, // UTType values
+                    //{ DevicePlatform.Android, new[] { "application/comics" } }, // MIME type
+                    { DevicePlatform.WinUI, new[] { ".txt", ".txt" } }, // file extension
+                                                                        //{ DevicePlatform.Tizen, new[] { "*/*" } },
+                                                                        //{ DevicePlatform.macOS, new[] { "cbr", "cbz" } }, // UTType values
+                    });
+
+            PickOptions options = new()
+                {
+                    PickerTitle = "Please select a comic file",
+                    FileTypes = customFileType,
+                };
+
+
+            //var result = await FilePicker.Default.PickAsync(options);
+            var result = await Microsoft.Maui.Storage.FilePicker.PickAsync(options);
+            if (result != null)
+            {
+                if (result.FileName.EndsWith("txt", StringComparison.OrdinalIgnoreCase))
+                {
+                    string g = "kkk";
+                    //using var stream = await result.OpenReadAsync();
+                    //var image = ImageSource.FromStream(() => stream);
+                }
+            }
+
+            //return result;
+        }
+        catch (Exception ex)
+        {
+            string err = ex.Message;
+            throw;
+        }
+    }
+}
